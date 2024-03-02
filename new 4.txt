@@ -1,0 +1,126 @@
+<script setup>
+import { useGameStore } from "@/stores/game";
+import { ref, onMounted, watch } from "vue";
+import UserLayout from "@/layouts/UserLayout.vue";
+import Keyboard from "@/components/Keyboard.vue";
+onMounted(async () => {
+  await this.activeInput();
+  await this.started();
+});
+const gameStore = useGameStore();
+const isStart = ref(false);
+const isGameOver = ref(false);
+const wordList = [
+  "The",
+  "Control",
+  "Game",
+  "Special",
+  "Computational",
+  "Science",
+];
+const time_count = ref(30);
+const curTime = ref(30);
+const wordTime = ref(5);
+const wrd = [];
+const cardElement = [];
+const randomCard = () => {
+  started();
+  if (!isGameOver.value) {
+    const randomIndex = Math.floor(Math.random() * wordList.length);
+    const word = wordList[randomIndex];
+
+    wrd.push(word);
+    const box = document.getElementById("box");
+    console.log(box);
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerText = word;
+    card.id = "word_" + randomIndex;
+
+    box.appendChild(card);
+    if (!isGameOver.value) {
+      cardElement.push(word);
+    }
+
+    // const screenWidth = window.innerWidth;
+    // const randomX = Math.random() * screenWidth - 200;
+    // console.log(randomX, screenWidth);
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // Get the element's dimensions
+    const cardWidth = card.offsetWidth;
+    const cardHeight = card.offsetHeight;
+
+    // Calculate the available space for random positioning
+    const maxLeft = windowWidth - cardWidth;
+    const maxTop = windowHeight - cardHeight;
+
+    // Generate random positions within the available space
+    const randomLeft = Math.min(randomLeft, maxLeft);
+    const randomTop = Math.min(randomTop, maxTop);
+
+    card.style.positioning = "absolute";
+    card.style.left = randomLeft + "px";
+    card.style.top = randomTop + "px";
+
+    card.addEventListener("animationend", () => {
+      document.body.removeChild;
+      cardElement.shift();
+    });
+  }
+};
+
+const activeInput = () => {
+  var inpField = document.querySelector(".input-field");
+  document.addEventListener("keydown", () => inpField.focus());
+};
+const started = () => {
+  isStart.value = true;
+};
+async function updateCurTime(cur) {
+  time_count.value = cur;
+}
+
+watch(isStart, () => {
+  var time = time_count.value;
+  if (isStart.value == true && isGameOver.value == false) {
+    setInterval(async function () {
+      if (time >= 0 && time <= 30) {
+        if (time > 0) {
+          time--;
+          updateCurTime(time);
+        }
+      }
+    }, 1000);
+
+    setInterval(async function () {
+      randomCard();
+    }, 2000);
+  }
+});
+</script>
+
+<template>
+  <UserLayout
+    ><div class="flex flex-col h-screen w-screen justify-center items-center">
+      <button @click="gameStore.randomFunction">
+        Random Card {{ time_count }} , {{ gameStore.currentWord }}
+      </button>
+
+      <div class="flex p-4 h-full w-full">
+        <div id="box" class="flex h-full w-full bg-blue-500"></div>
+      </div>
+	
+      <Keyboard />
+      <input
+        type="text"
+        autocomplete="off"
+        v-model="gameStore.input_value"
+        @input="activeInput"
+        class="input-field opacity-0 absolute -z-999"
+        @paste.prevent
+        @keyup.ctrl.prevent
+      /></div
+  ></UserLayout>
+</template>
