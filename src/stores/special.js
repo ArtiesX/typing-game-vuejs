@@ -54,10 +54,11 @@ export const useSpecialStore = defineStore("special", {
             try  { 
             this.maxData = [];
                 useAuthStore().allUid.forEach(async (value) => {
-                     if (this.maxData.length < 5) {
+                     
                         let maxCol = query(collection(db, "specialData"), orderBy("score", "desc"), where("uid", "==", value.uid), limit(1));
                      const maxSnapshot = await getDocs(maxCol);
-                    maxSnapshot.forEach((val) => {
+                     if (this.maxData.length != 5) {
+                     maxSnapshot.forEach((val) => {
                             this.maxData.push({
                             username: value.name,
                             data: val.data(),

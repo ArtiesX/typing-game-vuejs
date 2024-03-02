@@ -4,6 +4,7 @@ import { useAuthStore } from "@/stores/auth";
 import { collection,
   getDocs,
   doc,
+  getDoc,
   addDoc,
   deleteDoc,
   orderBy,
@@ -124,21 +125,24 @@ export const useGameStore = defineStore('game', {
         },
         async getAllMaxDataByUser() {
             try  {
-              
             this.maxData = [];
                 useAuthStore().allUid.forEach(async (value) => {
-                     if (this.maxData.length < 5) {
-                        let maxCol = query(collection(db, "normalData"), orderBy("wpm", "desc"), where("uid", "==", value.uid), limit(1));
-                     const maxSnapshot = await getDocs(maxCol);
-                    maxSnapshot.forEach((val) => {
-                     
+                    
+               
+                        let maxCol = query(collection(db, "normalData"), orderBy("wpm", "desc"),where("uid", "==",value.uid), limit(1));
+                    const maxSnapshot = await getDocs(maxCol);
+                    if (this.maxData.length != 5) {
+                        maxSnapshot.forEach((val) => {
+                       
                             this.maxData.push({
                             username: value.name,
                             data: val.data(),
                         });
                    
                     })
-                     } 
+                  
+                    } 
+                     
                      
                    
                 })
