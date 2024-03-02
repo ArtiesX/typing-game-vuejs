@@ -65,12 +65,6 @@ const routes = [{
         name: "admin-users",
         component: AdminUser,
     },
-    {
-        path: "/:pathMatch(.*)*",
-        name: "notfound",
-        component: NotFound,
-
-    }
 ]
 
 const router = createRouter({
