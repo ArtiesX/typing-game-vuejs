@@ -80,8 +80,11 @@ export const useGameStore = defineStore('game', {
         async sortMaxToMin() {
             
             this.maxData.sort(function (a,b) {
+
                 return b.data.wpm - a.data.wpm;
             }) 
+
+            this.maxData.splice(5)
         },
          async sortMinToMax() {
             this.tempWpm.sort((a,b) => {
@@ -128,12 +131,13 @@ export const useGameStore = defineStore('game', {
             this.maxData = [];
                 useAuthStore().allUid.forEach(async (value) => {
                     
-               
+                    
                         let maxCol = query(collection(db, "normalData"), orderBy("wpm", "desc"),where("uid", "==",value.uid), limit(1));
-                    const maxSnapshot = await getDocs(maxCol);
-                    if (this.maxData.length != 5) {
+                    
+                        const maxSnapshot = await getDocs(maxCol);
+                        
                         maxSnapshot.forEach((val) => {
-                       
+                           
                             this.maxData.push({
                             username: value.name,
                             data: val.data(),
@@ -141,7 +145,7 @@ export const useGameStore = defineStore('game', {
                    
                     })
                   
-                    } 
+                    
                      
                      
                    

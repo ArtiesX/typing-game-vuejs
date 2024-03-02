@@ -44,6 +44,7 @@ export const useSpecialStore = defineStore("special", {
             this.maxData.sort(function (a,b) {
                 return b.data.score - a.data.score;
             }) 
+            this.maxData.splice(5)
         },
         async sortMinToMax() {
             this.tempScore.sort((a,b) => {
@@ -57,14 +58,14 @@ export const useSpecialStore = defineStore("special", {
                      
                         let maxCol = query(collection(db, "specialData"), orderBy("score", "desc"), where("uid", "==", value.uid), limit(1));
                      const maxSnapshot = await getDocs(maxCol);
-                     if (this.maxData.length != 5) {
+                   
                      maxSnapshot.forEach((val) => {
                             this.maxData.push({
                             username: value.name,
                             data: val.data(),
                         });
                     })
-                     } 
+               
                 })
             } catch (err) {
                 console.log("Error", err);
