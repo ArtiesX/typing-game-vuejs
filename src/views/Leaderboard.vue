@@ -63,8 +63,8 @@ watch(
               <tr v-for="(items, index) in gameStore.maxData" class="">
                 <td class="py-3 px-8 text-center">{{ index + 1 }}</td>
                 <td class="py-3 px-8">{{ items.username }}</td>
-                <td class="py-3 px-8">{{ items.data.wpm }}</td>
-                <td class="py-3 px-8">{{ items.data.acc }}%</td>
+                <td class="py-3 px-8">{{ items.data.wpm.toFixed(2) }}</td>
+                <td class="py-3 px-8">{{ items.data.acc.toFixed(0) }}%</td>
               </tr>
             </tbody>
           </table>
@@ -86,8 +86,8 @@ watch(
                 <tr v-for="(items, index) in specialStore.maxData" class="">
                   <td class="py-3 px-8 text-center">{{ index + 1 }}</td>
                   <td class="py-3 px-8">{{ items.username }}</td>
-                  <td class="py-3 px-8">{{ items.data.score }}</td>
-                  <td class="py-3 px-8">{{ items.data.acc }}%</td>
+                  <td class="py-3 px-8">{{ items.data.score.toFixed(0) }}</td>
+                  <td class="py-3 px-8">{{ items.data.acc.toFixed(0) }}%</td>
                 </tr>
               </tbody>
             </table>
